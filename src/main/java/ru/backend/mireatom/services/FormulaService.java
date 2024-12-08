@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.backend.mireatom.entities.Formula;
 import ru.backend.mireatom.repositories.FormulaRepository;
 
+import java.util.*;
+
 @Service
 @Transactional
 public class FormulaService {
@@ -17,5 +19,41 @@ public class FormulaService {
     @Transactional
     public void save(Formula formula) {
         formulaRepository.save(formula);
+    }
+
+    @Transactional
+    public TreeMap<Integer, Formula> findSimilar(String latex) {
+        List<Formula> all = formulaRepository.findAll();
+        TreeMap<Integer, Formula> result = new TreeMap<>();
+        for (Formula formula : all) {
+            int similarity = calculateSimilarity(latex.toCharArray(), formula.getLatex().toCharArray());
+            if (similarity != 0) {
+                result.put(similarity, formula);
+            }
+        }
+        return result;
+    }
+
+    public int calculateSimilarity(char[] latex, char[] currentFormula) {
+        Arrays.sort(latex);
+        Arrays.sort(currentFormula);
+        int countSimilar = 0;
+        if (latex.length >= currentFormula.length) {
+            for (char c : currentFormula) {
+                if (Arrays.binarySearch(latex, c) >= 0) {
+                    countSimilar++;
+                }
+            }
+            return 100 * countSimilar / latex.length;
+
+        }
+        else {
+            for (char c : latex) {
+                if (Arrays.binarySearch(currentFormula, c) >= 0) {
+                    countSimilar++;
+                }
+            }
+            return 100 * countSimilar / currentFormula.length;
+        }
     }
 }
