@@ -34,6 +34,26 @@ public class FormulaService {
         return result;
     }
 
+   @Transactional
+   public HashSet<Formula> findByTags(String tags) {
+       List<Formula> all = formulaRepository.findAll();
+       String[] tagsArr = tags.split(" ");
+       HashSet<Formula> result = new HashSet<>();
+       for (Formula formula : all) {
+           boolean found = true;
+           for (String tag : tagsArr) {
+               if (!formula.getTags().contains(tag)) {
+                   found = false;
+                   break;
+               }
+           }
+           if (found) {
+               result.add(formula);
+           }
+       }
+       return result;
+   }
+
     public int calculateSimilarity(char[] latex, char[] currentFormula) {
         Arrays.sort(latex);
         Arrays.sort(currentFormula);
