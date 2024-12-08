@@ -25,7 +25,7 @@ public class FormulasController {
 
     @PostMapping(consumes = "text/plain")
     @ResponseBody
-    public ResponseEntity<TreeMap<Integer, Formula>> findSimilar(@RequestBody String latex){
+    public ResponseEntity<TreeMap<Integer, Formula>> findSimilar(@RequestParam String latex){
         return new ResponseEntity<>(formulaService.findSimilar(latex), HttpStatus.OK);
     }
 }
