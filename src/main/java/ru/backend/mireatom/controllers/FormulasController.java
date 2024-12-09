@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.backend.mireatom.entities.Formula;
 import ru.backend.mireatom.services.FormulaService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -27,7 +28,7 @@ public class FormulasController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity<TreeMap<Integer, Formula>> findSimilar(@RequestParam String latex){
+    public ResponseEntity<TreeMap<Integer, ArrayList<Formula>>> findSimilar(@RequestParam String latex){
         return new ResponseEntity<>(formulaService.findSimilar(latex), HttpStatus.OK);
     }
 

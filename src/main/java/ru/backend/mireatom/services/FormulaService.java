@@ -22,13 +22,22 @@ public class FormulaService {
     }
 
     @Transactional
-    public TreeMap<Integer, Formula> findSimilar(String latex) {
+    public TreeMap<Integer, ArrayList<Formula>> findSimilar(String latex) {
         List<Formula> all = formulaRepository.findAll();
-        TreeMap<Integer, Formula> result = new TreeMap<>(Comparator.reverseOrder());
+        TreeMap<Integer, ArrayList<Formula>> result = new TreeMap<>(Comparator.reverseOrder());
         for (Formula formula : all) {
             int similarity = calculateSimilarity(latex.toCharArray(), formula.getLatex().toCharArray());
             if (similarity != 0) {
-                result.put(similarity, formula);
+                if (result.containsKey(similarity)) {
+                    ArrayList<Formula> buf = result.get(similarity);
+                    buf.add(formula);
+                    result.put(similarity, buf);
+                }
+                else {
+                    ArrayList<Formula> buf = new ArrayList<>();
+                    buf.add(formula);
+                    result.put(similarity, buf);
+                }
             }
         }
         return result;
