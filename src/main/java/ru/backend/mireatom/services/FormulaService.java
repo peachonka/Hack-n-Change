@@ -57,23 +57,32 @@ public class FormulaService {
     public int calculateSimilarity(char[] latex, char[] currentFormula) {
         Arrays.sort(latex);
         Arrays.sort(currentFormula);
-        int countSimilar = 0;
         if (latex.length >= currentFormula.length) {
-            for (char c : currentFormula) {
-                if (Arrays.binarySearch(latex, c) >= 0) {
-                    countSimilar++;
-                }
-            }
-            return 100 * countSimilar / latex.length;
-
+            return countCharArraysSimilarity(latex, currentFormula);
         }
         else {
-            for (char c : latex) {
-                if (Arrays.binarySearch(currentFormula, c) >= 0) {
-                    countSimilar++;
-                }
-            }
-            return 100 * countSimilar / currentFormula.length;
+            return countCharArraysSimilarity(currentFormula, latex);
         }
+    }
+
+    public int countCharArraysSimilarity(char[] bigger, char[] smaller) {
+        int digitsAndSpaces = countDigitsAndSpaces(bigger);
+        int countSimilar = 0;
+        for (char c : smaller) {
+            if (Arrays.binarySearch(bigger, c) >= 0 && !(Character.isDigit(c)) && !(c == ' ')) {
+                countSimilar++;
+            }
+        }
+        return (100 * countSimilar) / (bigger.length - digitsAndSpaces);
+    }
+
+    public int countDigitsAndSpaces (char[] arr) {
+        int count = 0;
+        for (char c : arr) {
+            if (Character.isDigit(c) || c == ' ') {
+                count++;
+            }
+        }
+        return count;
     }
 }
