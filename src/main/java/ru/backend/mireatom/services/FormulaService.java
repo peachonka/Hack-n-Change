@@ -24,7 +24,7 @@ public class FormulaService {
     @Transactional
     public TreeMap<Integer, Formula> findSimilar(String latex) {
         List<Formula> all = formulaRepository.findAll();
-        TreeMap<Integer, Formula> result = new TreeMap<>();
+        TreeMap<Integer, Formula> result = new TreeMap<>(Comparator.reverseOrder());
         for (Formula formula : all) {
             int similarity = calculateSimilarity(latex.toCharArray(), formula.getLatex().toCharArray());
             if (similarity != 0) {
