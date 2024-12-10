@@ -1,16 +1,18 @@
-// components/CustomSelect.tsx
+// components/ui/customSelect.tsx
 import { useState } from 'react';
 
 interface CustomSelectProps {
   options: string[];
+  onChange: (selectedOption: string) => void; // Добавляем onChange
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ options }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ options, onChange }) => {
   const [selected, setSelected] = useState<string>(options[0]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSelect = (option: string) => {
     setSelected(option);
+    onChange(option); // Вызываем onChange при выборе
     setIsOpen(false);
   };
 
@@ -37,21 +39,18 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options }) => {
       )}
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
-          width: 8px; /* Ширина скроллбара */
+          width: 8px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f1f1; /* Цвет фона трека */
-          border-radius: 10px; /* Закругление углов трека */
+          background: #f1f1f1;
+          border-radius: 10px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #888; /* Цвет ползунка */
-          border-radius: 10px; /* Закругление углов ползунка */
+          background: #888;
+          border-radius: 10px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #555; /* Цвет ползунка при наведении */
+          background: #555;
         }
       `}</style>
     </div>
