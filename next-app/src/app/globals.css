@@ -62,6 +62,32 @@ body {
   }
 }
 
+/* globals.css */
+body {
+  --text-font-family: 'Montserrat', sans-serif; /* Fallback to sans-serif */
+  font-family: 'Montserrat', sans-serif; /* Fallback to sans-serif */
+  --keyboard-background: white;
+  --keycap-secondary-background: black;
+  --keycap-secondary-text: white;
+}
+
+math-field {
+  --caret-color: black;
+  --selection-background-color-focused: black;
+  padding-left: 20px;
+  font-size: larger;
+}
+
+math-field::part(menu-toggle), math-field::part(virtual-keyboard-toggle)
+{
+  color: black;
+}
+
+math-field::part(keyboard-sink)
+{
+  background-color: white;
+}
+
 @layer base {
   * {
     @apply border-border;
