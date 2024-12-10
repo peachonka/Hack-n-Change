@@ -22,20 +22,24 @@ public class FormulaService {
     }
 
     @Transactional
-    public TreeMap<Integer, ArrayList<Formula>> findSimilar(String latex) {
-        List<Formula> all = formulaRepository.findAll();
+    public TreeMap<Integer, ArrayList<Formula>> findSimilar(Formula formula) {
+        List<Formula> all;
+        if (formula.getTags().isEmpty()) {
+            all = formulaRepository.findAll();
+        }
+        else all = formulaRepository.findByTags(formula.getTags());
         TreeMap<Integer, ArrayList<Formula>> result = new TreeMap<>(Comparator.reverseOrder());
-        for (Formula formula : all) {
-            int similarity = calculateSimilarity(latex.toCharArray(), formula.getLatex().toCharArray());
+        for (Formula currentFormula : all) {
+            int similarity = calculateSimilarity(formula.getLatex().toCharArray(), currentFormula.getLatex().toCharArray());
             if (similarity != 0) {
                 if (result.containsKey(similarity)) {
                     ArrayList<Formula> buf = result.get(similarity);
-                    buf.add(formula);
+                    buf.add(currentFormula);
                     result.put(similarity, buf);
                 }
                 else {
                     ArrayList<Formula> buf = new ArrayList<>();
-                    buf.add(formula);
+                    buf.add(currentFormula);
                     result.put(similarity, buf);
                 }
             }
@@ -44,10 +48,10 @@ public class FormulaService {
     }
 
    @Transactional
-   public HashSet<Formula> findByTags(String tags) {
+   public TreeMap<Integer, ArrayList<Formula>> findByTags(String tags) {
        List<Formula> all = formulaRepository.findAll();
        String[] tagsArr = tags.split(" ");
-       HashSet<Formula> result = new HashSet<>();
+       TreeMap<Integer, ArrayList<Formula>> result = new TreeMap<>();
        for (Formula formula : all) {
            boolean found = true;
            for (String tag : tagsArr) {
@@ -57,7 +61,15 @@ public class FormulaService {
                }
            }
            if (found) {
-               result.add(formula);
+               int countTags = formula.getTags().split(" ").length;
+               if (result.containsKey(countTags)) {
+                   result.get(countTags).add(formula);
+               }
+               else {
+                   ArrayList<Formula> buf = new ArrayList<>();
+                   buf.add(formula);
+                   result.put(countTags, buf);
+               }
            }
        }
        return result;
@@ -77,8 +89,10 @@ public class FormulaService {
     public int countCharArraysSimilarity(char[] bigger, char[] smaller) {
         int digitsAndSpaces = countDigitsAndSpaces(bigger);
         int countSimilar = 0;
+        StringBuilder similarStr = new StringBuilder();
         for (char c : smaller) {
             if (Arrays.binarySearch(bigger, c) >= 0 && !(Character.isDigit(c)) && !(c == ' ')) {
+                similarStr.append(c);
                 countSimilar++;
             }
         }
