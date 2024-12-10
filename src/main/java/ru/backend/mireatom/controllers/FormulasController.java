@@ -33,7 +33,7 @@ public class FormulasController {
 
     @PostMapping(consumes = "text/plain")
     @ResponseBody
-    public ResponseEntity<HashSet<Formula>> findByTags(@RequestBody String tags){
+    public ResponseEntity<TreeMap<Integer, ArrayList<Formula>>> findByTags(@RequestBody String tags){
         return new ResponseEntity<>(formulaService.findByTags(tags), HttpStatus.OK);
     }
 }

@@ -48,10 +48,10 @@ public class FormulaService {
     }
 
    @Transactional
-   public HashSet<Formula> findByTags(String tags) {
+   public TreeMap<Integer, ArrayList<Formula>> findByTags(String tags) {
        List<Formula> all = formulaRepository.findAll();
        String[] tagsArr = tags.split(" ");
-       HashSet<Formula> result = new HashSet<>();
+       TreeMap<Integer, ArrayList<Formula>> result = new TreeMap<>();
        for (Formula formula : all) {
            boolean found = true;
            for (String tag : tagsArr) {
@@ -61,7 +61,15 @@ public class FormulaService {
                }
            }
            if (found) {
-               result.add(formula);
+               int countTags = formula.getTags().split(" ").length;
+               if (result.containsKey(countTags)) {
+                   result.get(countTags).add(formula);
+               }
+               else {
+                   ArrayList<Formula> buf = new ArrayList<>();
+                   buf.add(formula);
+                   result.put(countTags, buf);
+               }
            }
        }
        return result;
