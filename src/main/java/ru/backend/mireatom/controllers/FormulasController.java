@@ -7,11 +7,12 @@ import ru.backend.mireatom.entities.Formula;
 import ru.backend.mireatom.services.FormulaService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 import java.util.TreeMap;
 
 @RestController
 @RequestMapping("/formulas")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FormulasController {
     private final FormulaService formulaService;
 
@@ -35,5 +36,10 @@ public class FormulasController {
     @ResponseBody
     public ResponseEntity<TreeMap<Integer, ArrayList<Formula>>> findByTags(@RequestBody String tags){
         return new ResponseEntity<>(formulaService.findByTags(tags), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Formula>> findAll() {
+        return new ResponseEntity<>(formulaService.findAll(), HttpStatus.OK);
     }
 }
