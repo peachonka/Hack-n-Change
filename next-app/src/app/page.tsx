@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import  MathFieldEditable  from "../components/math-field-editable";
 import  MathField  from "../components/math-field";
 import { MathfieldElement } from 'mathlive';
+import { MagnifyingGlassIcon } from '@heroicons/react/outline';
 import {
   Sheet,
   SheetContent,
@@ -72,14 +73,16 @@ export default function Home() {
     <div className='flex h-screen w-screen items-center justify-center'>
 
       <div className='flex flex-col space-y-4'>
-        <div className='flex space-x-2 self-end'>   
-          <button 
-            className='ring-1 ring-black py-2 px-4 rounded-xl w-max'
-            onClick={() => setIsModalOpen(true)} // Открываем модальное окно
-          >
-            Сохранить
-          </button>
-          <button className='bg-black text-white py-2 px-4 rounded-xl w-max'>Сравнить</button>
+        <div className='flex justify-between w-full'>
+          <div className='flex space-x-2 self-start'>
+            <button className='bg-black text-white py-2 px-4 rounded-xl w-max'>Сравнить</button>
+            <button 
+              className='ring-1 ring-black py-2 px-4 rounded-xl w-max'
+              onClick={() => setIsModalOpen(true)} // Открываем модальное окно
+            >
+              Сохранить
+            </button>
+          </div>
           <Sheet>
             <SheetTrigger onClick={() => {console.log(latexOutput);}}>
               <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50">
