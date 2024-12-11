@@ -63,6 +63,14 @@ body {
 }
 
 /* globals.css */
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   --text-font-family: 'Montserrat', sans-serif;
   font-family: 'Montserrat', sans-serif;
