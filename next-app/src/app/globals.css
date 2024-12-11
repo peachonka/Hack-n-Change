@@ -63,12 +63,21 @@ body {
 }
 
 /* globals.css */
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
-  --text-font-family: 'Montserrat', sans-serif; /* Fallback to sans-serif */
-  font-family: 'Montserrat', sans-serif; /* Fallback to sans-serif */
-  --keyboard-background: white;
+  --text-font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  --keyboard-background: rgb(255, 255, 255);
   --keycap-secondary-background: black;
   --keycap-secondary-text: white;
+  
 }
 
 math-field {
