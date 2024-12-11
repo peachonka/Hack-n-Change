@@ -56,7 +56,8 @@ export default function Home() {
   const handleSave = () => {
     const tagsString = selectedTags.join(", "); // Преобразуем массив тегов в строку
 
-    const newFormula = {
+    const newFormula: Formula = {
+      id: 0,
       latex: latexOutput,
       description,
       tags: tagsString,
