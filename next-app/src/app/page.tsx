@@ -59,8 +59,8 @@ export default function Home() {
     const newFormula: Formula = {
       id: 0,
       latex: latexOutput,
-      description,
-      tags: tagsString,
+      description: description,
+      tags: tagsString
     };
 
     // Здесь вы можете отправить newFormula на сервер
