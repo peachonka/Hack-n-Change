@@ -43,17 +43,6 @@ export default function Home() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]); // Состояние для выбранных тегов
   const [latexOutput, setLatexOutput] = useState<string>(""); // Состояние для хранения LaTeX
 
-  useEffect(() => {
-    if (mathFieldRef.current) {
-      mathFieldRef.current.addEventListener('input', () => {
-        if (mathFieldRef.current != null) {
-          const latex = mathFieldRef.current.getValue('latex');
-          setLatexOutput(latex); // Сохраняем LaTeX в состоянии
-        }
-      });
-    }
-  }, []);
-
   // Фильтрация формул на основе выбранного тега
   const filteredFormulas = formulaBase.filter(formula => {
     return selectedTag === "Все" || formula.tags.includes(selectedTag);
@@ -92,7 +81,7 @@ export default function Home() {
           </button>
           <button className='bg-black text-white py-2 px-4 rounded-xl w-max'>Сравнить</button>
           <Sheet>
-            <SheetTrigger>
+            <SheetTrigger onClick={() => {console.log(latexOutput);}}>
               <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 50 50">
                 <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
               </svg>
@@ -119,7 +108,7 @@ export default function Home() {
             </SheetContent>
           </Sheet>
         </div>
-        <MathFieldEditable className="min-w-[350px] min-h-[160px] rounded-md ring-1 ring-zinc-500"></MathFieldEditable>
+        <MathFieldEditable latexOutput={latexOutput} setLatexOutput={setLatexOutput} className="min-w-[350px] min-h-[160px] rounded-md ring-1 ring-zinc-500"></MathFieldEditable>
       </div>
 
       {/* Модальное окно для ввода формулы */}
@@ -133,7 +122,7 @@ export default function Home() {
               placeholder="Описание" 
               value={description} 
               onChange={(e) => setDescription(e.target.value)} 
-              className="border rounded-md p-2 mt-2 w-full"
+              className="border rounded-md p-2 mt-4 w-full"
             />
             <div className="mt-2 grid grid-cols-2 gap-2"> {/* Отображаем теги в несколько столбцов */}
               {allTags.slice(1).map(tag => ( // Убираем первый тег
@@ -141,6 +130,7 @@ export default function Home() {
                   <input 
                     type="checkbox" 
                     value={tag} 
+                    className='mr-2'
                     checked={selectedTags.includes(tag)} 
                     onChange={(e) => {
                       const value = e.target.value;
