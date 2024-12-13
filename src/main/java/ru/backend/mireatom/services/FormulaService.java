@@ -1,5 +1,6 @@
 package ru.backend.mireatom.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.backend.mireatom.entities.Formula;
@@ -12,8 +13,14 @@ import java.util.*;
 public class FormulaService {
     private final FormulaRepository formulaRepository;
 
+    @Autowired
     public FormulaService(FormulaRepository formulaRepository) {
         this.formulaRepository = formulaRepository;
+    }
+
+    @Transactional
+    public List<Formula> findAll() {
+        return formulaRepository.findAll();
     }
 
     @Transactional

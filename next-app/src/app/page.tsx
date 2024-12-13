@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "../components/ui/sheet";
 import CustomSelect from '../components/ui/customSelect';
+import { fetchAllFormulas, sendFormula } from '../api/data';
 
 interface Formula {
   id: number;
@@ -30,11 +31,13 @@ const allTags = [
   "#Информатика"
 ];
 
-const formulaBase: Formula[] = [
-  {id: 1, latex: "x^2+y^2=z^2", description: "Дистанция двух точек в прямоугольном квадрате", tags: "#Математика Геометрия"},
-  {id: 2, latex: "k_{n+1} = n^2 + k_n^2 - k_{n-1}", description: "екран", tags: "#Информатика"},
-  {id: 3, latex: "пкуп", description: "купить", tags: "#Физика Термодинамика"},
-];
+// const formulaBase: Formula[] = [
+//   {id: 1, latex: "x^2+y^2=z^2", description: "Дистанция двух точек в прямоугольном квадрате", tags: "#Математика Геометрия"},
+//   {id: 2, latex: "k_{n+1} = n^2 + k_n^2 - k_{n-1}", description: "екран", tags: "#Информатика"},
+//   {id: 3, latex: "пкуп", description: "купить", tags: "#Физика Термодинамика"},
+// ];
+
+const formulaBase: Formula[] = await fetchAllFormulas();
 
 const intersections = {
   "50": [
@@ -70,6 +73,7 @@ export default function Home() {
   const [description, setDescription] = useState<string>(""); // Состояние для описания формулы
   const [selectedTags, setSelectedTags] = useState<string[]>([]); // Состояние для выбранных тегов
   const [latexOutput, setLatexOutput] = useState<string>(""); // Состояние для хранения LaTeX
+  
 
   // Фильтрация формул на основе выбранного тега
   const filteredFormulas = formulaBase.filter(formula => {
@@ -108,13 +112,14 @@ export default function Home() {
     const tagsString = selectedTags.join(", "); // Преобразуем массив тегов в строку
 
     const newFormula: Formula = {
-      id: Date.now(), // Генерируем уникальный ID
+      id: 0,
       latex: latexOutput,
-      description,
-      tags: tagsString,
+      description: description,
+      tags: tagsString
     };
 
     // Здесь вы можете отправить newFormula на сервер
+    sendFormula(newFormula);
     console.log(newFormula);
 
     // Закрываем модальное окно и сбрасываем форму
