@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import 'mathlive'; // Import the library
 
-const MathField = ({ content }) => {
+const MathField = ({ id, content }) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const MathField = ({ content }) => {
 
   return (
     <div>
-      <math-field ref={ref}>{content}</math-field>
+      <math-field class={id} ref={ref}>{content}</math-field>
     </div>
   );
 };
